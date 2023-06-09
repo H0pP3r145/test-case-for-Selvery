@@ -1,0 +1,13 @@
+<template>
+	<svg xmlns="http://www.w3.org/2000/svg" width="20" height="22" id="trash">
+		<path
+			fill="none"
+			fill-rule="evenodd"
+			stroke="#000"
+			stroke-linecap="round"
+			stroke-linejoin="round"
+			stroke-width="2"
+			d="M1 5h18M17 5v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5m3 0V3a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2M8 10v6M12 10v6"
+		></path>
+	</svg>
+</template>

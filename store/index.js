@@ -3,6 +3,6 @@ import {listStore} from "./listStore";
 
 export default createStore({
     modules: {
-        list: listStore
+        store: listStore
     }
 })
