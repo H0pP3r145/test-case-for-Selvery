@@ -14,7 +14,7 @@
 						type="number"
 						class="single--card__input"
 						:value="row.value"
-						@input="updateTableData({ event: $event, id: row.id, key: 'value' })"
+						@change="updateTableData({ event: $event, id: row.id, key: 'value' })"
 					/>
 				</div>
 			</div>
