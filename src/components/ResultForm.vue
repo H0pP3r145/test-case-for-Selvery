@@ -27,7 +27,7 @@
 						<td class="table__td">{{ row.variable }}</td>
 						<td>
 							<span>{{
-								result({ variable: row.variable, value: row.value, type: row.type })
+								result1({ variable: row.variable, value: row.value, type: row.type })
 							}}</span>
 						</td>
 					</tr>
@@ -55,19 +55,19 @@ export default defineComponent({
 		result({ variable, value, type }) {
 			let cache = value.split(/[\s,;]+/);
 			for (let i = 0; i < cache.length; i++) {
-				for (let j = 0; j < this.tableDataVariable.length; j++) {
-					if (cache[i] === this.tableDataVariable[j].variable) {
-						cache[i] = this.tableDataVariable[j].value;
-					}
+				const variableMatch = this.tableDataVariable.find((item) => item.variable === cache[i]);
+				if (variableMatch) {
+					cache[i] = variableMatch.value;
 				}
 			}
+
 			for (let i = 0; i < cache.length; i++) {
-				for (let j = 0; j < this.resultTable.length; j++) {
-					if (cache[i] === this.resultTable[j].variable) {
-						cache[i] = this.resultTable[j].result;
-					}
+				const resultMatch = this.resultTable.find((item) => item.variable === cache[i]);
+				if (resultMatch) {
+					cache[i] = resultMatch.result;
 				}
 			}
+
 			try {
 				let evalResult = eval(cache.join(" "));
 				this.resultTable.push({ variable: variable, result: evalResult });

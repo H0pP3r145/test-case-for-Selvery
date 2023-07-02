@@ -73,8 +73,8 @@
 </template>
 
 <script>
-import { defineComponent } from "vue";
 import TrashIcon from "@/assets/TrashIcon.vue";
+import { defineComponent } from "vue";
 import { mapGetters, mapMutations, mapState } from "vuex";
 
 export default defineComponent({
