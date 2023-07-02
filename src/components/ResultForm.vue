@@ -23,12 +23,10 @@
 			<span class="input--data__title">Результат вычесляемых значений</span>
 			<table class="result--block__table">
 				<tbody>
-					<tr v-for="row in tableDataFormulae" :key="row.id" class="table__tr">
+					<tr v-for="row in resultTable" :key="row.varialbe" class="table__tr">
 						<td class="table__td">{{ row.variable }}</td>
 						<td>
-							<span>{{
-								result1({ variable: row.variable, value: row.value, type: row.type })
-							}}</span>
+							<span>{{ row.result }}</span>
 						</td>
 					</tr>
 				</tbody>
@@ -43,40 +41,10 @@ import { mapGetters, mapMutations, mapState } from "vuex";
 
 export default defineComponent({
 	name: "ResultForm",
-	data() {
-		return {
-			resultTable: [],
-		};
-	},
 	methods: {
 		...mapMutations({
 			updateTableData: "updateTableData",
 		}),
-		result({ variable, value, type }) {
-			let cache = value.split(/[\s,;]+/);
-			for (let i = 0; i < cache.length; i++) {
-				const variableMatch = this.tableDataVariable.find((item) => item.variable === cache[i]);
-				if (variableMatch) {
-					cache[i] = variableMatch.value;
-				}
-			}
-
-			for (let i = 0; i < cache.length; i++) {
-				const resultMatch = this.resultTable.find((item) => item.variable === cache[i]);
-				if (resultMatch) {
-					cache[i] = resultMatch.result;
-				}
-			}
-
-			try {
-				let evalResult = eval(cache.join(" "));
-				this.resultTable.push({ variable: variable, result: evalResult });
-				return type === "boolean" ? Boolean(evalResult) : evalResult;
-			} catch (e) {
-				console.log(e);
-				return "Ошибка в выражении!";
-			}
-		},
 	},
 	computed: {
 		...mapGetters({
@@ -87,6 +55,34 @@ export default defineComponent({
 			tableDataVariable: (state) => state.store.tableDataVariable,
 			tableDataFormulae: (state) => state.store.tableDataFormulae,
 		}),
+		resultTable() {
+			const resultTable = [];
+			for (const row of this.tableDataFormulae) {
+				let cache = row.value.split(/[\s,;]+/);
+				for (let i = 0; i < cache.length; i++) {
+					const variableMatch = this.tableDataVariable.find(
+						(item) => item.variable === cache[i]
+					);
+					if (variableMatch) {
+						cache[i] = variableMatch.value;
+					}
+				}
+				for (let i = 0; i < cache.length; i++) {
+					const resultMatch = resultTable.find((item) => item.variable === cache[i]);
+					if (resultMatch) {
+						cache[i] = resultMatch.result;
+					}
+				}
+				try {
+					let evalResult = eval(cache.join(" "));
+					resultTable.push({ variable: row.variable, result: evalResult });
+				} catch (e) {
+					console.log(e);
+					resultTable.push({ variable: row.variable, result: "Ошибка в выражении!" });
+				}
+			}
+			return resultTable;
+		},
 	},
 });
 </script>
